@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TIMO — صفحة المعلومات والاشتراكات</title>
+  <style>
+    :root{
+      --primary-1:#22c55e; --primary-2:#06b6d4; --ink:#0f172a; --bg:#0b1020; --card:#121a34; --muted:#cbd5e1; --white:#ffffff; --radius:18px; --shadow: 0 12px 30px rgba(0,0,0,.25);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:radial-gradient(1100px 700px at 85% -10%, rgba(6,182,212,.25), transparent 60%),radial-gradient(900px 600px at -10% -10%, rgba(34,197,94,.25), transparent 60%),var(--bg);color:var(--white);font-family:"Tajawal", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans"}
+    .wrap{max-width:980px;margin:auto;padding:28px}
+    header{text-align:center;background:linear-gradient(135deg, var(--primary-1), var(--primary-2));color:var(--ink);border-radius:var(--radius);padding:28px 22px;box-shadow:var(--shadow)}
+    header img{width:280px;border-radius:16px;box-shadow:var(--shadow)}
+    h1{margin:10px 0 0;font-size:34px}
+    .subtitle{margin:8px 0 0;color:#072e33;font-weight:600}
+    .card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-top:20px}
+    .note{color:var(--muted);font-size:14px}
+    .durations{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+    @media(max-width:900px){.durations{grid-template-columns:repeat(3,1fr)}} @media(max-width:520px){.durations{grid-template-columns:repeat(2,1fr)}}
+    .btn{appearance:none;border:none;cursor:pointer;border-radius:12px;padding:12px 14px;font-weight:700;text-decoration:none;display:inline-block}
+    .btn-primary{background:linear-gradient(135deg,var(--primary-1),var(--primary-2));color:#041524}
+    .btn-ghost{background:transparent;color:var(--white);border:1px solid rgba(255,255,255,.12)}
+    .contact{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .footer{margin-top:24px;color:var(--muted);text-align:center;font-size:14px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <img src="timo-logo-transparent.png" alt="TIMO Logo" />
+      <h1>TIMO</h1>
+      <div class="subtitle">مرحبًا بك في TIMO</div>
+      <p style="margin-top:16px;font-weight:bold;font-size:15px;color:#072e33">
+        خدمة عملاء رسمية لتفعيل الاشتراكات ال Unlimited — خدمة عملاء متاحة 24 ساعة
+      </p>
+    </header>
+
+    <section class="card">
+      <h2>ماذا يتضمن الاشتراك؟</h2>
+      <p class="note">كل المزايا التالية <strong>غير محدودة</strong>:</p>
+      <ul>
+        <li>📹 مكالمات فيديو غير محدودة</li>
+        <li>📞 مكالمات صوتية غير محدودة</li>
+        <li>💬 رسائل غير محدودة</li>
+      </ul>
+    </section>
+
+    <section class="card" id="plans">
+      <h2>اختر مدة الاشتراك</h2>
+      <div class="durations" id="durationList"></div>
+      <div id="contactPanel" style="display:none">
+        <div class="contact">
+          <a class="btn btn-primary" id="whatsBtn" target="_blank" rel="noopener">راسلنا على واتساب</a>
+          <a class="btn btn-ghost" id="tgBtn" target="_blank" rel="noopener">راسلنا على تيليجرام</a>
+        </div>
+        <p class="note">سيتم فتح التطبيق مع رسالة جاهزة حسب المدة المختارة.</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>خدمة العملاء</h2>
+      <div class="contact">
+        <a class="btn btn-primary" href="https://wa.me/201040191454" target="_blank" rel="noopener">واتساب: 201040191454</a>
+        <a class="btn btn-primary" href="https://wa.me/213562828812" target="_blank" rel="noopener">حماية المستخدم: 213562828812</a>
+        <a class="btn btn-ghost" href="https://t.me/Customer_Serrvise" target="_blank" rel="noopener">تيليجرام: @Customer_Serrvise</a>
+      </div>
+    </section>
+
+    <div class="footer">جميع الحقوق محفوظة لشركة TIMO2019</div>
+  </div>
+
+  <script>
+    const durations = ["شهر","شهرين","3 شهور","5 شهور","6 شهور","12 شهر"];
+    const durationList = document.getElementById('durationList');
+    const contactPanel = document.getElementById('contactPanel');
+    const whatsBtn = document.getElementById('whatsBtn');
+    const tgBtn = document.getElementById('tgBtn');
+    const whatsappNumber = '201040191454';
+    const telegramUser = 'Customer_Serrvise';
+    let selected = null;
+
+    function buildMessage(){
+      return `مرحبًا TIMO 👋\nأرغب بالاستفسار عن سعر الاشتراك لمدة: ${selected}.\n\nالمزايا: مكالمات فيديو غير محدودة + مكالمات صوتية غير محدودة + رسائل غير محدودة.`;
+    }
+
+    function renderDurations(){
+      durationList.innerHTML = '';
+      durations.forEach(d => {
+        const btn = document.createElement('button');
+        btn.className = 'btn ' + (d === selected ? 'btn-primary' : 'btn-ghost');
+        btn.textContent = d;
+        btn.onclick = () => {
+          selected = d;
+          renderDurations();
+          contactPanel.style.display = 'block';
+          const msg = encodeURIComponent(buildMessage());
+          whatsBtn.href = `https://wa.me/${whatsappNumber}?text=${msg}`;
+          tgBtn.href = `https://t.me/${telegramUser}?text=${msg}`;
+        };
+        durationList.appendChild(btn);
+      });
+    }
+    renderDurations();
+  </script>
+</body>
+</html>
